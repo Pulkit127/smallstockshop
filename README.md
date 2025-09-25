@@ -22,7 +22,7 @@ cd laraveltask
 ### Step 2: Install Composer dependencies
 
 <pre>
-<code>composer update</code>
+<code>composer install</code>
 </pre>
 
 ### Step 3: Set up the environment configuration
