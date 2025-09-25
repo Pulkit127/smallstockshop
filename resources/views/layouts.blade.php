@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ Route('products.index') }}">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Stock</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ Route('logout') }}">Logout</a></li>
@@ -74,6 +74,8 @@
             </div>
         </div>
     </section>
+
+    @yield('content')
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
