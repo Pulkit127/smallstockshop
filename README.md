@@ -14,7 +14,7 @@ This is a Laravel-based application named Booking. Below are the steps to set up
 
 <pre>
 <code>git clone https://github.com/Pulkit127/smallstockshop.git && 
-cd laraveltask
+cd smallstockshop
 </code>
 
 </pre>
