@@ -18,12 +18,13 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/index', [AdminController::class, 'index'])->name('dashboard');
 
     // Product Modules
-    Route::get('/product/index', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/product/show', [ProductController::class, 'show'])->name('products.show');
-    Route::get('/product/create', action: [ProductController::class, 'create'])->name('products.create');
-    Route::post('/product/edit', action: [ProductController::class, 'edit'])->name('products.edit');
-    Route::post('/product/store', action: [ProductController::class, 'store'])->name('products.store');
-    Route::post('/product/destroy', action: [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/index', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/create', action: [ProductController::class, 'create'])->name('products.create');
+    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::post('/products/store', action: [ProductController::class, 'store'])->name('products.store');
+    Route::delete('/products/{product}', action: [ProductController::class, 'destroy'])->name('products.destroy');
 
     //Category Modules
     Route::get('/category/index', [CategoryController::class, 'index'])->name('categorys.index');

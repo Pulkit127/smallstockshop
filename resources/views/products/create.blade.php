@@ -45,6 +45,13 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="sale_price" class="form-label">Selling Price</label>
+                    <input type="number" step="0.01" class="form-control" name="sale_price" id="sale_price"
+                        value="{{ old('sale_price') }}" placeholder="Enter sale price" required>
+                </div>
+
+
+                <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" name="description" id="description" rows="4"
                         placeholder="Enter product description">{{ old('description') }}</textarea>
