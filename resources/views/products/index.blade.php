@@ -31,7 +31,7 @@
                 <tbody>
                     @forelse($products as $product)
                         <tr class="text-center">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $product->id }}</td>
                             <td>
                                 @if($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="60"
@@ -63,6 +63,10 @@
                     @endforelse
                 </tbody>
             </table>
+            <!-- Pagination Links -->
+<div class="mt-3">
+    {{ $products->links() }}
+</div>
         </div>
     </div>
 @endsection

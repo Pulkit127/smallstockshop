@@ -15,8 +15,8 @@ Route::middleware(['guest.admin'])->group(function () {
 Route::middleware(['auth.admin'])->group(function () {
 
     //Dashboard
-    Route::get('/index', [AdminController::class, 'index'])->name('dashboard');
-
+    Route::get('/index', [AdminController::class, 'index'])->name('index');
+    
     // Product Modules
     Route::get('/products/index', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('products.show');

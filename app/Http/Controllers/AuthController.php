@@ -26,7 +26,7 @@ class AuthController extends Controller
             ->first();
 
         if ($user && Auth::attempt($credentials)) {
-            return redirect()->route('dashboard')->with('success', 'Login successful!');
+            return redirect()->route('index')->with('success', 'Login successful!');
         }
         return back()->with('error', 'Invalid credentials.');
     }

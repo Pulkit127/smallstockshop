@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return view('products.index', compact('products'));
     }
 
@@ -48,6 +48,7 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)
     {
+
         $data = $request->validated();
 
         if ($request->hasFile('image')) {

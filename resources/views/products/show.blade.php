@@ -3,8 +3,8 @@
 @section('title', 'Product Details')
 
 @section('content')
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow-lg p-4" style="width: 100%; max-width: 600px;">
+<div class="d-flex justify-content-center">
+    <div class="card shadow-lg p-4" style="width: 50%; max-width: 600px;">
         <h3 class="card-title text-center mb-4">Product Details</h3>
 
         {{-- Product Image --}}
