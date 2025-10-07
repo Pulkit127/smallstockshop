@@ -5,7 +5,7 @@
     <!-- Hero Section -->
     <header class="bg-primary text-white text-center py-5">
         <div class="container">
-            <h1 class="display-4">Welcome to Small Stock Shop</h1>
+            <h1 class="display-4">Welcome to {{ env('APP_NAME') }}</h1>
             <p class="lead">Manage products, stock, and reports easily.</p>
             <a href="{{ Route('index') }}" class="btn btn-light btn-lg mt-3">Get Started</a>
         </div>
@@ -27,9 +27,9 @@
                 <div class="col-md-4 mt-4 mt-md-0">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Stock</h5>
+                            <h5 class="card-title">Stock Reports</h5>
                             <p class="card-text">Track stock availability and keep everything updated in real-time.</p>
-                            <a href="#" class="btn btn-primary">Manage Stock</a>
+                            <a href="{{ Route('reports.index') }}" class="btn btn-primary">View Report</a>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Reports</h5>
                             <p class="card-text">Generate sales and purchase reports for better decision-making.</p>
-                            <a href="#" class="btn btn-primary">View Reports</a>
+                            <a href="{{ Route('reports.index') }}" class="btn btn-primary">View Reports</a>
                         </div>
                     </div>
                 </div>

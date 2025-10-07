@@ -1,72 +1,68 @@
-@extends('layouts') <!-- Your main layout -->
-
-@section('title', 'Products')
+@extends('layouts')
 
 @section('content')
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>All Products</h2>
-            <a href="{{ route('products.create') }}" class="btn btn-success">Add New Product</a>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>Products</h2>
+            <a href="{{ route('products.create') }}" class="btn btn-primary">+ Add Product</a>
         </div>
 
         @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark text-center">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Market Price (₹)</th>
+                    <th>Sale Price (₹)</th>
+                    <th>Current Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($products as $key => $product)
                     <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Market Price</th>
-                        <th>Salling Price</th>
-                        <th>Actions</th>
+                        <td>{{ $key + 1 }}</td>
+                        <td>
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" width="50" height="50" alt="Product Image">
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->category->name ?? '-' }}</td>
+                        <td>₹{{ number_format($product->market_price, 2) }}</td>
+                        <td>₹{{ number_format($product->sale_price, 2) }}</td>
+                        <td class="{{ $product->current_stock <= 5 ? 'text-danger fw-bold' : '' }}">
+                            {{ $product->current_stock }}
+                        </td>
+                        <td>
+                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse($products as $product)
-                        <tr class="text-center">
-                            <td>{{ $product->id }}</td>
-                            <td>
-                                @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="60"
-                                        class="rounded">
-                                @else
-                                    <img src="{{ asset('images/no-image.png') }}" alt="No Image" width="60" class="rounded">
-                                @endif
-                            </td>
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->category->name ?? 'N/A' }}</td>
-                            <td>₹{{ number_format($product->market_price, 2) }}</td>
-                            <td>₹{{ number_format($product->sale_price, 2) }}</td>
-
-                            <td>
-                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary btn-sm">View</a>
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                    class="d-inline-block" onsubmit="return confirm('Are you sure?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No products found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <!-- Pagination Links -->
-<div class="mt-3">
-    {{ $products->links() }}
-</div>
+                @empty
+                    <tr>
+                        <td colspan="8" class="text-center">No products found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <!-- Pagination Links -->
+        <div class="mt-3">
+            {{ $products->links() }}
         </div>
     </div>
 @endsection

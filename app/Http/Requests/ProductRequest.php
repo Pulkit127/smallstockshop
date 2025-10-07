@@ -22,12 +22,13 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|unique:products,name|max:255',
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:150',
             'market_price' => 'required|numeric|min:0',
-            'sale_price' => 'required|numeric|min:0|gte:market_price',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'description' => 'nullable',
+            'sale_price' => 'required|numeric|min:0',
+            'current_stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
+            'description' => 'nullable|string',
         ];
     }
 
@@ -43,6 +44,7 @@ class ProductRequest extends FormRequest
             'market_price.required' => 'Market price is required.',
             'sale_price.gte' => 'Sale price must be greater than or equal to market price.',
             'image.image' => 'The file must be an image.',
+            'current_stock.required' => 'Current Stock name is required.',
         ];
     }
 }
