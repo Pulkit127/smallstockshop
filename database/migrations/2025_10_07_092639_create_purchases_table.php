@@ -12,6 +12,9 @@ return new class extends Migration {
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('supplier_id'); // Supplier reference
             $table->string('invoice_no')->nullable();
             $table->date('date'); // Purchase date
