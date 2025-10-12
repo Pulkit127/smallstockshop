@@ -26,7 +26,7 @@
                 <td>{{ $key+1 }}</td>
                 <td>{{ $purchase->invoice_no }}</td>
                 <td>{{ $purchase->supplier->name ?? '-' }}</td>
-                <td>₹{{ number_format($purchase->total,2) }}</td>
+                <td>{{ number_format($purchase->total_amount,2) }}</td>
                 <td>{{ $purchase->created_at->format('d-m-Y') }}</td>
             </tr>
             @endforeach

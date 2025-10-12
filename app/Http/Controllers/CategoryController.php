@@ -8,10 +8,18 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     // List all categories
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(10);
-        return view('categories.index', compact('categories'));
+        $search = $request->query('item'); 
+
+        $categories = Category::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('categories.index', compact('categories', 'search'));
     }
 
     // Show create form
@@ -43,7 +51,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,'.$category->id.'|max:255',
+            'name' => 'required|unique:categories,name,' . $category->id . '|max:255',
             'description' => 'nullable|string',
         ]);
 

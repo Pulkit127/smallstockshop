@@ -58,6 +58,10 @@
                   </button>
                 </div>
               </form>
+              <p class="text-center small">
+                Don't have an account?
+                <a href="{{ route('register.show') }}">Register here</a>
+              </p>
             </div>
           </div>
         </div>

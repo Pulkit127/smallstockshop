@@ -2,8 +2,7 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2>Stock Levels</h2>
-
+        <h2>Stock Report</h2>
         <table class="table table-bordered table-striped mt-3">
             <thead class="table-dark">
                 <tr>

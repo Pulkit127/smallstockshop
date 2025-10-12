@@ -11,10 +11,24 @@ use App\Models\Supplier;
 class PurchaseController extends Controller
 {
     // Show all purchases
-    public function index()
+    public function index(Request $request)
     {
-        $purchases = Purchase::with('supplier')->latest()->paginate(10);
-        return view('purchases.index', compact('purchases'));
+        // Step 1: Get search input
+        $search = $request->input('item');
+
+        // Step 2: Query with optional search filter
+        $purchases = Purchase::with('supplier')
+            ->when($search, function ($query, $search) {
+                $query->where('invoice_no', 'like', "%{$search}%") // Purchase invoice number
+                    ->orWhereHas('supplier', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%"); // Supplier name
+                    });
+            })
+            ->latest()
+            ->paginate(10);
+
+        // Step 3: Pass data and search term to view
+        return view('purchases.index', compact('purchases', 'search'));
     }
 
     // Show create form

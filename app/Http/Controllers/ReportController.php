@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Product;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Exports\PurchaseExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,13 +50,8 @@ class ReportController extends Controller
 
     public function purchasePdf()
     {
-        $purchases = Purchase::with('supplier', 'items')->get();
+        $purchases = Purchase::with('supplier', 'items')->latest()->get();
         $pdf = PDF::loadView('reports.purchases_pdf', compact('purchases'));
         return $pdf->download('purchase_report.pdf');
-    }
-
-    public function purchaseExcel()
-    {
-        return Excel::download(new PurchaseExport, 'purchase_report.xlsx');
     }
 }

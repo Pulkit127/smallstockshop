@@ -14,6 +14,9 @@ use App\Http\Controllers\ReportController;
 Route::middleware(['guest.admin'])->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login-page');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+    Route::get('/register', [AuthController::class, 'show'])->name('register.show');
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
 Route::middleware(['auth.admin'])->group(function () {
@@ -72,8 +75,6 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('reports.profit-loss');
         Route::get('/stock', [ReportController::class, 'stock'])->name('reports.stock');
         Route::get('/reports/purchases/pdf', [ReportController::class, 'purchasePdf'])->name('reports.purchases.pdf');
-        Route::get('/reports/purchases/excel', [ReportController::class, 'purchaseExcel'])->name('reports.purchases.excel');
-
     });
 
     //Logout

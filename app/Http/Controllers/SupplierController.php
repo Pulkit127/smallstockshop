@@ -8,11 +8,24 @@ use App\Models\Supplier;
 class SupplierController extends Controller
 {
     // List all suppliers
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = Supplier::paginate(10);
-        return view('suppliers.index', compact('suppliers'));
+        // Step 1: Get search input
+        $search = $request->input('item');
+
+        // Step 2: Apply search filter (if provided)
+        $suppliers = Supplier::when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhere('contact', 'like', "%{$search}%");
+        })
+            ->latest()
+            ->paginate(10);
+
+        // Step 3: Send data to view with search value
+        return view('suppliers.index', compact('suppliers', 'search'));
     }
+
 
     // Show create form
     public function create()

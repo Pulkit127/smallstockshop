@@ -10,10 +10,24 @@ use App\Http\Requests\ProductRequest;
 class ProductController extends Controller
 {
     // List all products
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->paginate(10);
-        return view('products.index', compact('products'));
+        // Step 1: Get search keyword from request
+        $search = $request->input('item');
+
+        // Step 2: Query with optional search filter
+        $products = Product::with('category')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate(10);
+
+        // Step 3: Keep search term for form value
+        return view('products.index', compact('products', 'search'));
     }
 
     // Show create form
@@ -29,11 +43,11 @@ class ProductController extends Controller
         $data = $request->validated();
 
         // Handle image upload
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time().'_'.$file->getClientOriginalName();
+            $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/products'), $filename);
-            $data['image'] = 'uploads/products/'.$filename;
+            $data['image'] = 'uploads/products/' . $filename;
         }
 
         Product::create($data);
@@ -51,7 +65,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|unique:products,name,'.$product->id.'|max:255',
+            'name' => 'required|unique:products,name,' . $product->id . '|max:255',
             'category_id' => 'required|exists:categories,id',
             'market_price' => 'required|numeric|min:0',
             'sale_price' => 'required|numeric|min:0',
@@ -63,11 +77,11 @@ class ProductController extends Controller
         $data = $request->all();
 
         // Handle image upload
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time().'_'.$file->getClientOriginalName();
+            $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/products'), $filename);
-            $data['image'] = 'uploads/products/'.$filename;
+            $data['image'] = 'uploads/products/' . $filename;
         }
 
         $product->update($data);

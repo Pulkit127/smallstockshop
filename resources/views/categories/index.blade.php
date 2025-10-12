@@ -7,6 +7,25 @@
             <a href="{{ route('categories.create') }}" class="btn btn-primary">+ Add Category</a>
         </div>
 
+        <form method="GET" action="{{ route('categories.index') }}" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="item" value="{{ $search }}" class="form-control" placeholder="Search category">
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="{{ route('categories.index') }}" class="btn btn-secondary w-100">
+                    Reset
+                </a>
+            </div>
+        </form>
+
+
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif

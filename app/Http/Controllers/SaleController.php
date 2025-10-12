@@ -9,11 +9,23 @@ use App\Models\Product;
 
 class SaleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sales = Sale::latest()->paginate(10);
-        return view('sales.index', compact('sales'));
+        // Get search input for customer name
+        $search = $request->input('item');
+
+        // Query sales with optional customer name filter
+        $sales = Sale::when($search, function ($query, $search) {
+            $query->where('customer_name', 'like', "%{$search}%");
+        })
+            ->latest()
+            ->paginate(10);
+
+        // Pass data and search term to view
+        return view('sales.index', compact('sales', 'search'));
     }
+
+
 
     public function create()
     {
