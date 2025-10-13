@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -10,9 +11,10 @@ class CategoryController extends Controller
     // List all categories
     public function index(Request $request)
     {
-        $search = $request->query('item'); 
+        $search = $request->query('item');
 
         $categories = Category::query()
+            ->where('user_id', Auth::id())
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -35,7 +37,7 @@ class CategoryController extends Controller
             'name' => 'required|unique:categories,name|max:255',
             'description' => 'nullable|string',
         ]);
-
+        $request->merge(['user_id' => Auth::id()]);
         Category::create($request->all());
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully!');

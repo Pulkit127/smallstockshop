@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Product;
-
+use Auth;
 class SaleController extends Controller
 {
     public function index(Request $request)
@@ -15,9 +15,10 @@ class SaleController extends Controller
         $search = $request->input('item');
 
         // Query sales with optional customer name filter
-        $sales = Sale::when($search, function ($query, $search) {
-            $query->where('customer_name', 'like', "%{$search}%");
-        })
+        $sales = Sale::where('user_id', Auth::id())
+            ->when($search, function ($query, $search) {
+                $query->where('customer_name', 'like', "%{$search}%");
+            })
             ->latest()
             ->paginate(10);
 
@@ -44,6 +45,7 @@ class SaleController extends Controller
         ]);
 
         $sale = Sale::create([
+            'user_id' => Auth::id(),
             'customer_name' => $request->customer_name,
             'date' => $request->date,
             'total_amount' => 0,

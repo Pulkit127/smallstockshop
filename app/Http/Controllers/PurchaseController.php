@@ -7,7 +7,7 @@ use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Product;
 use App\Models\Supplier;
-
+use Auth;
 class PurchaseController extends Controller
 {
     // Show all purchases
@@ -18,6 +18,7 @@ class PurchaseController extends Controller
 
         // Step 2: Query with optional search filter
         $purchases = Purchase::with('supplier')
+            ->where('user_id', Auth::id())
             ->when($search, function ($query, $search) {
                 $query->where('invoice_no', 'like', "%{$search}%") // Purchase invoice number
                     ->orWhereHas('supplier', function ($q) use ($search) {
@@ -51,6 +52,7 @@ class PurchaseController extends Controller
         ]);
 
         $purchase = Purchase::create([
+            'user_id' => Auth::id(),
             'supplier_id' => $request->supplier_id,
             'invoice_no' => $request->invoice_no,
             'date' => $request->date,

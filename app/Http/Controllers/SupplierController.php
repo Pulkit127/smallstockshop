@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Supplier;
-
+use Auth;
 class SupplierController extends Controller
 {
     // List all suppliers
@@ -14,7 +14,7 @@ class SupplierController extends Controller
         $search = $request->input('item');
 
         // Step 2: Apply search filter (if provided)
-        $suppliers = Supplier::when($search, function ($query, $search) {
+        $suppliers = Supplier::where('user_id', Auth::id())->when($search, function ($query, $search) {
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('address', 'like', "%{$search}%")
                 ->orWhere('contact', 'like', "%{$search}%");
@@ -41,6 +41,8 @@ class SupplierController extends Controller
             'contact' => 'nullable|string|max:255',
             'address' => 'nullable|string',
         ]);
+
+        $request->merge(['user_id' => Auth::id()]);
 
         Supplier::create($request->all());
 

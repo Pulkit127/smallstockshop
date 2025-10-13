@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Requests\ProductRequest;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -17,6 +18,7 @@ class ProductController extends Controller
 
         // Step 2: Query with optional search filter
         $products = Product::with('category')
+            ->where('user_id', Auth::id()) 
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
@@ -49,7 +51,7 @@ class ProductController extends Controller
             $file->move(public_path('uploads/products'), $filename);
             $data['image'] = 'uploads/products/' . $filename;
         }
-
+        $data['user_id'] = Auth::id();
         Product::create($data);
         return redirect()->route('products.index')->with('success', 'Product created successfully!');
     }

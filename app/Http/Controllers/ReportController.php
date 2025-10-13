@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Exports\PurchaseExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Auth;
 
 class ReportController extends Controller
 {
@@ -21,22 +22,22 @@ class ReportController extends Controller
     // Purchase report
     public function purchases()
     {
-        $purchases = Purchase::with('items.product')->latest()->get();
+        $purchases = Purchase::with('items.product')->where('user_id',Auth::id())->latest()->get();
         return view('reports.purchases', compact('purchases'));
     }
 
     // Stock report
     public function stock()
     {
-        $products = Product::paginate(10);
+        $products = Product::where('user_id',Auth::id())->paginate(10);
         return view('reports.stock', compact('products'));
     }
 
     // Profit / Loss report
     public function profitLoss()
     {
-        $sales = Sale::with('items')->get();
-        $purchases = Purchase::with('items')->get();
+        $sales = Sale::with('items')->where('user_id', Auth::id())->get();
+        $purchases = Purchase::with('items')->where('user_id', Auth::id())->get();
 
         $totalSales = $sales->sum('total_amount');
         $totalPurchase = $purchases->sum(function ($purchase) {
@@ -50,7 +51,7 @@ class ReportController extends Controller
 
     public function purchasePdf()
     {
-        $purchases = Purchase::with('supplier', 'items')->latest()->get();
+        $purchases = Purchase::with('supplier', 'items')->where('user_id', Auth::id())->latest()->get();
         $pdf = PDF::loadView('reports.purchases_pdf', compact('purchases'));
         return $pdf->download('purchase_report.pdf');
     }
