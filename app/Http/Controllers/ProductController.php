@@ -48,8 +48,8 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/products'), $filename);
-            $data['image'] = 'uploads/products/' . $filename;
+            $file->move(public_path('storage/products'), $filename);
+            $data['image'] = 'storage/products/' . $filename;
         }
         $data['user_id'] = Auth::id();
         Product::create($data);
@@ -82,8 +82,8 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/products'), $filename);
-            $data['image'] = 'uploads/products/' . $filename;
+            $file->move(public_path('storage/products'), $filename);
+            $data['image'] = 'storage/products/' . $filename;
         }
 
         $product->update($data);
