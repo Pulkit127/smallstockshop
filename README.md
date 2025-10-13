@@ -13,16 +13,16 @@ This is a Laravel-based application named Booking. Below are the steps to set up
 ### Step 1: Clone the repository
 
 <pre>
-<code>git clone https://github.com/Pulkit127/smallstockshop.git && 
-cd smallstockshop
+<code>git clone https://github.com/Pulkit127/ShopRetailStock.git && 
+cd ShopRetailStock
 </code>
 
 </pre>
 
-### Step 2: Install Composer dependencies
+### Step 2: Update Composer dependencies
 
 <pre>
-<code>composer install</code>
+<code>composer update</code>
 </pre>
 
 ### Step 3: Set up the environment configuration
@@ -34,7 +34,7 @@ cd smallstockshop
 Update the `.env` file with the following:
 
 <pre>
-<code>APP_NAME=smallstockshop
+<code>APP_NAME="Shop Retail Stock"
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=false
@@ -51,7 +51,7 @@ Ensure the database settings are properly configured in the `.env` file:
 <code>DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=smallstockshop
+DB_DATABASE=shop_retail_stock
 DB_USERNAME=root
 DB_PASSWORD=
 </code>
@@ -69,13 +69,7 @@ DB_PASSWORD=
 <code>php artisan migrate</code>
 </pre>
 
-### Step 6: Run Seeder
-
-<pre>
-<code>php artisan db:seed</code>
-</pre>
-
-### Step 7: Run Storage Link
+### Step 6: Run Storage Link
 
 <pre>
 <code>php artisan storage:link</code>
@@ -89,5 +83,4 @@ Start the Laravel development server:
 <code>php artisan serve</code>
 </pre>
 
-The application will be accessible at [http://localhost:8000](http://localhost:8000).
-
+The application will be accessible at [http://localhost:8000].
